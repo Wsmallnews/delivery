@@ -8,19 +8,22 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Wsmallnews\Delivery\Commands\DeliveryCommand;
+use Wsmallnews\Delivery\Components\UserAddress;
 use Wsmallnews\Delivery\Testing\TestsDelivery;
 
 class DeliveryServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'delivery';
+    public static string $name = 'sn-delivery';
 
-    public static string $viewNamespace = 'delivery';
+    public static string $viewNamespace = 'sn-delivery';
 
     public function configurePackage(Package $package): void
     {
@@ -62,6 +65,12 @@ class DeliveryServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
+        // 注册模型别名
+        Relation::enforceMorphMap([
+            'sn_user_address' => 'Wsmallnews\Delivery\Models\UserAddress',
+        ]);
+
+
         // Asset Registration
         FilamentAsset::register(
             $this->getAssets(),
@@ -85,6 +94,8 @@ class DeliveryServiceProvider extends PackageServiceProvider
             }
         }
 
+        Livewire::component('sn-delivery-user-address', UserAddress::class);
+
         // Testing
         Testable::mixin(new TestsDelivery);
     }
@@ -101,8 +112,8 @@ class DeliveryServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('delivery', __DIR__ . '/../resources/dist/components/delivery.js'),
-            Css::make('delivery-styles', __DIR__ . '/../resources/dist/delivery.css'),
-            Js::make('delivery-scripts', __DIR__ . '/../resources/dist/delivery.js'),
+            // Css::make('delivery-styles', __DIR__ . '/../resources/dist/delivery.css'),
+            // Js::make('delivery-scripts', __DIR__ . '/../resources/dist/delivery.js'),
         ];
     }
 
