@@ -19,11 +19,11 @@ use Livewire\Component;
 use Wsmallnews\Delivery\Models\UserAddress as UserAddressModel;
 use Wsmallnews\Support\Concerns\HasColumns;
 
-class UserAddress extends Component implements HasForms, HasActions
+class UserAddress extends Component implements HasActions, HasForms
 {
+    use HasColumns;
     use InteractsWithActions;
     use InteractsWithForms;
-    use HasColumns;
 
     public $user = null;
 
@@ -42,8 +42,6 @@ class UserAddress extends Component implements HasForms, HasActions
         $this->addresses = UserAddressModel::where('user_id', $this->user->id ?? 1)->orderBy('is_default', 'desc')->orderBy('id', 'desc')->get();
     }
 
-
-
     public function createAction(): Action
     {
         return CreateAction::make()
@@ -58,19 +56,17 @@ class UserAddress extends Component implements HasForms, HasActions
             ->successNotificationTitle('创建成功');
     }
 
-
-
     public function editAction(): Action
     {
         return EditAction::make('edit')
             ->record(function (array $arguments) {
                 $id = $arguments['id'] ?? 0;
+
                 return UserAddressModel::where('user_id', $this->user->id)->findOrFail($id);
             })
             ->form($this->schema())
             ->link();
     }
-
 
     public function setDefaultAction(): Action
     {
@@ -78,6 +74,7 @@ class UserAddress extends Component implements HasForms, HasActions
             ->label('设为默认')
             ->record(function (array $arguments) {
                 $id = $arguments['id'] ?? 0;
+
                 return UserAddressModel::where('user_id', $this->user->id)->findOrFail($id);
             })
             ->action(function (UserAddressModel $record) {
@@ -90,12 +87,12 @@ class UserAddress extends Component implements HasForms, HasActions
             ->link();
     }
 
-
     public function deleteAction(): Action
     {
         return DeleteAction::make('delete')
             ->record(function (array $arguments) {
                 $id = $arguments['id'] ?? 0;
+
                 return UserAddressModel::where('user_id', $this->user->id)->findOrFail($id);
             })
             ->color('gray')
@@ -103,12 +100,10 @@ class UserAddress extends Component implements HasForms, HasActions
             ->link();
     }
 
-
     public function choose($id)
     {
         $this->current = $this->addresses->where('id', $id)->first();
     }
-
 
     private function schema()
     {
@@ -129,7 +124,6 @@ class UserAddress extends Component implements HasForms, HasActions
                 ->required(),
         ];
     }
-
 
     public function render()
     {

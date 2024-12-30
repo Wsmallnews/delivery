@@ -2,11 +2,4 @@
 
 namespace Wsmallnews\Delivery\Contracts;
 
-
-
-interface DeliveryableInterface
-{
-    
-    
-
-}
+interface DeliveryableInterface {}

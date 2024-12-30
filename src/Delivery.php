@@ -2,13 +2,11 @@
 
 namespace Wsmallnews\Delivery;
 
-use Wsmallnews\Delivery\Exceptions\DeliveryException;
 use Wsmallnews\Delivery\Adapters\ExpressAdapter;
+use Wsmallnews\Delivery\Exceptions\DeliveryException;
 
-class Delivery 
+class Delivery
 {
-
-
     /**
      * delivery 配送列表
      *
@@ -23,28 +21,26 @@ class Delivery
      */
     protected $customCreators = [];
 
-
     protected $content;
 
-    public function __construct($a) {
+    public function __construct($a)
+    {
         $this->content = $a;
         print_r(111111);
     }
-
 
     // 测试代码，随时可删
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
-
 
     public function getContent()
     {
         return $this->content;
     }
-
 
     /**
      * 获取一个 driver 实例
@@ -69,8 +65,6 @@ class Delivery
 
         return $this->drivers[$name] = $this->get($name);
     }
-
-
 
     /**
      * 尝试从缓存中获取 driver 实例
@@ -108,7 +102,7 @@ class Delivery
 
         $driverMethod = 'create' . ucfirst($name) . 'Driver';
 
-        if (!method_exists($this, $driverMethod)) {
+        if (! method_exists($this, $driverMethod)) {
             throw new DeliveryException("配送驱动 [{$name}] 不支持.");
         }
 
@@ -118,7 +112,6 @@ class Delivery
     /**
      * Call a custom driver creator.
      *
-     * @param  array  $config
      * @return Sender
      */
     protected function callCustomCreator(array $config)
@@ -126,11 +119,9 @@ class Delivery
         return $this->customCreators[$config['driver']]($config);
     }
 
-
     /**
      * 创建一个 快递物流 发货实例
      *
-     * @param  array  $config
      * @return Sender
      */
     public function createExpressDriver(array $config)
@@ -139,7 +130,6 @@ class Delivery
 
         return new Sender($adapter);
     }
-
 
     /**
      * 创建一个 wechat 发货实例
@@ -154,8 +144,6 @@ class Delivery
     //     return new Sender($adapter);
     // }
 
-
-
     // /**
     //  * 创建一个 手动发货实例
     //  *
@@ -169,8 +157,6 @@ class Delivery
     //     return new Sender($adapter);
     // }
 
-
-
     /**
      * Get the default driver name.
      *
@@ -180,7 +166,6 @@ class Delivery
     // {
     //     return '';          // 没有默认配置，必须传入要使用的 driver
     // }
-
 
     /**
      * Get the filesystem connection configuration.
@@ -230,6 +215,5 @@ class Delivery
     //     return $config[$name];
     //     // return $this->app['config']["filesystems.disks.{$name}"] ?: [];
     // }
-
 
 }

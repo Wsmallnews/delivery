@@ -70,7 +70,6 @@ class DeliveryServiceProvider extends PackageServiceProvider
             'sn_user_address' => 'Wsmallnews\Delivery\Models\UserAddress',
         ]);
 
-
         // Asset Registration
         FilamentAsset::register(
             $this->getAssets(),
