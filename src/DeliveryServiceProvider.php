@@ -65,11 +65,6 @@ class DeliveryServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        // 注册模型别名
-        Relation::enforceMorphMap([
-            'sn_user_address' => 'Wsmallnews\Delivery\Models\UserAddress',
-        ]);
-
         // Asset Registration
         FilamentAsset::register(
             $this->getAssets(),
@@ -92,8 +87,6 @@ class DeliveryServiceProvider extends PackageServiceProvider
                 ], 'delivery-stubs');
             }
         }
-
-        Livewire::component('sn-delivery-user-address', UserAddress::class);
 
         // Testing
         Testable::mixin(new TestsDelivery);
@@ -156,7 +149,6 @@ class DeliveryServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_delivery_table',
         ];
     }
 }
